@@ -123,7 +123,7 @@ def web_recognize():
         raise BadRequest("Given file is invalid!")
         
 @app.route('/compare', methods=['POST'])
-def web_recognize():
+def web_compare():
     if 'id' not in request.args:
         raise BadRequest("Identifier for the face was not given!")
     file = extract_image(request)
