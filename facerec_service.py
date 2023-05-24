@@ -91,7 +91,7 @@ def compare_faces_in_image(file_stream, face_id):
     tsDownload = time.time()
     # Get face encodings for any faces in the uploaded image
     uploaded_faces = face_recognition.face_encodings(img)
-
+    tsEncoding = time.time()
     # Defaults for the result object
     faces = []
 
@@ -106,7 +106,8 @@ def compare_faces_in_image(file_stream, face_id):
                 "dist": dist,
                 "processTime": time.time() - ts,
                 "totalTime": time.time() - tsStart,
-                "donwloadTime": tsDownload - tsStart
+                "donwloadTime": tsDownload - tsStart,
+                "encodingTime": tsEncoding - tsDownload
             })
 
     return {
