@@ -89,7 +89,7 @@ def compare_faces_in_image(file_stream, face_id):
     img = face_recognition.load_image_file(file_stream)
 
     # Get face encodings for any faces in the uploaded image
-    uploaded_faces = face_recognition.face_encodings(img)[0]
+    uploaded_faces = face_recognition.face_encodings(img)
 
     # Defaults for the result object
     faces = []
@@ -98,7 +98,7 @@ def compare_faces_in_image(file_stream, face_id):
         face_encodings = []
         if face_id in faces_dict:
             face_encodings.append(faces_dict.get(face_id))
-            dist = face_recognition.face_distance(face_encodings, uploaded_faces[0])
+            dist = face_recognition.face_distance(face_encodings, uploaded_faces[0])[0]
             faces.append({
                 "id": face_id,
                 "dist": dist
