@@ -85,9 +85,10 @@ def detect_faces_in_image(file_stream):
         "faces": faces
     }
 def compare_faces_in_image(file_stream, face_id):
+    tsStart = time.time()
     # Load the uploaded image file
     img = face_recognition.load_image_file(file_stream)
-
+    tsDownload = time.time()
     # Get face encodings for any faces in the uploaded image
     uploaded_faces = face_recognition.face_encodings(img)
 
@@ -103,7 +104,9 @@ def compare_faces_in_image(file_stream, face_id):
             faces.append({
                 "id": face_id,
                 "dist": dist,
-                "processTime": time.time() - ts
+                "processTime": time.time() - ts,
+                "totalTime": time.time() - tsStart,
+                "donwloadTime": tsDownload - tsStart
             })
 
     return {
