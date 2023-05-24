@@ -84,7 +84,29 @@ def detect_faces_in_image(file_stream):
         "count": faces_found,
         "faces": faces
     }
+def compare_faces_in_image(file_stream, face_id):
+    # Load the uploaded image file
+    img = face_recognition.load_image_file(file_stream)
 
+    # Get face encodings for any faces in the uploaded image
+    uploaded_face = face_recognition.face_encodings(img)[0]
+
+    # Defaults for the result object
+    faces = []
+
+    if uploaded_face:
+        face_encodings = []
+        if face_id in faces_dict
+            face_encodings.append(faces_dict.get(face_id))
+            dist = face_recognition.face_distance(face_encodings, uploaded_face)
+            faces.append({
+                "id": face_id,
+                "dist": dist
+            })
+
+    return {
+        "faces": faces
+    }
 # <Picture functions> #
 
 # <Controller>
@@ -97,6 +119,18 @@ def web_recognize():
     if file and is_picture(file.filename):
         # The image file seems valid! Detect faces and return the result.
         return jsonify(detect_faces_in_image(file))
+    else:
+        raise BadRequest("Given file is invalid!")
+        
+@app.route('/compare', methods=['POST'])
+def web_recognize():
+    if 'id' not in request.args:
+        raise BadRequest("Identifier for the face was not given!")
+    file = extract_image(request)
+
+    if file and is_picture(file.filename):
+        # The image file seems valid! Detect faces and return the result.
+        return jsonify(compare_faces_in_image(file, request.args.get('id')))
     else:
         raise BadRequest("Given file is invalid!")
 
