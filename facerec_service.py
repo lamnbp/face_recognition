@@ -1,6 +1,6 @@
 from os import listdir, remove
 from os.path import isfile, join, splitext
-
+import time
 import face_recognition
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -98,10 +98,12 @@ def compare_faces_in_image(file_stream, face_id):
         face_encodings = []
         if face_id in faces_dict:
             face_encodings.append(faces_dict.get(face_id))
+            ts = time.time()
             dist = face_recognition.face_distance(face_encodings, uploaded_faces[0])[0]
             faces.append({
                 "id": face_id,
-                "dist": dist
+                "dist": dist,
+                "processTime": time.time() - ts
             })
 
     return {
