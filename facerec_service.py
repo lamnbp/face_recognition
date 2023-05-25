@@ -186,10 +186,8 @@ def url_faces():
         file = requests.get(url)
         filename = "{0}/{1}.jpg".format(persistent_faces, request.args.get('id'))
         open(filename, "wb").write(file.content)
-        try:
-            new_encoding = calc_face_encoding(filename)
-            faces_dict.update({request.args.get('id'): new_encoding})
-            
+        new_encoding = calc_face_encoding(filename)
+        faces_dict.update({request.args.get('id'): new_encoding})
     return jsonify(list(faces_dict.keys()))
 
 def extract_image(request):
