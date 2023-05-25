@@ -178,11 +178,12 @@ def url_faces():
         raise BadRequest("Identifier for the face was not given!")
 
     if request.method == 'GET':
-        app.logger.info('%s loaded', file.filename)
+        url = request.args.get('url')
+        app.logger.info('%s loaded', url)
         # HINT jpg included just for the image check -> this is faster then passing boolean var through few methods
         # TODO add method for extension persistence - do not forget abut the deletion
         
-        file = requests.get(request.args.get('url'))
+        file = requests.get(url)
         open("{0}/{1}.jpg".format(persistent_faces, request.args.get('id')), "wb").write(file.content)
         try:
             new_encoding = calc_face_encoding(file.content)
