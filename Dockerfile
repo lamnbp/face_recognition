@@ -36,7 +36,7 @@ RUN cd ~ && \
 
 # Install Flask
 RUN cd ~ && \
-    pip3 install flask flask-cors
+    pip3 install flask flask-cors requests
 
 
 # Install Face-Recognition Python Library
