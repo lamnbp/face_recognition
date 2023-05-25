@@ -5,6 +5,7 @@ import face_recognition
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from werkzeug.exceptions import BadRequest
+import requests
 
 # Global storage for images
 faces_dict = {}
@@ -169,6 +170,27 @@ def web_faces():
 
     return jsonify(list(faces_dict.keys()))
 
+@app.route('/face', methods=['GET'])
+def url_faces():
+    if 'id' not in request.args:
+        raise BadRequest("Identifier for the face was not given!")
+    if 'url' not in request.args:
+        raise BadRequest("Identifier for the face was not given!")
+
+    if request.method == 'GET':
+        app.logger.info('%s loaded', file.filename)
+        # HINT jpg included just for the image check -> this is faster then passing boolean var through few methods
+        # TODO add method for extension persistence - do not forget abut the deletion
+        
+        file = requests.get(request.args.get('url'))
+        open("{0}/{1}.jpg".format(persistent_faces, request.args.get('id')), "wb").write(file.content)
+        try:
+            new_encoding = calc_face_encoding(file.content)
+            faces_dict.update({request.args.get('id'): new_encoding})
+        except Exception as exception:
+            raise BadRequest(exception)
+            
+    return jsonify(list(faces_dict.keys()))
 
 def extract_image(request):
     # Check if a valid image file was uploaded
