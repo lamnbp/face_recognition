@@ -184,12 +184,11 @@ def url_faces():
         # TODO add method for extension persistence - do not forget abut the deletion
         
         file = requests.get(url)
-        open("{0}/{1}.jpg".format(persistent_faces, request.args.get('id')), "wb").write(file.content)
+        filename = "{0}/{1}.jpg".format(persistent_faces, request.args.get('id'))
+        open(filename, "wb").write(file.content)
         try:
-            new_encoding = calc_face_encoding(file.content)
+            new_encoding = calc_face_encoding(filename)
             faces_dict.update({request.args.get('id'): new_encoding})
-        except Exception as exception:
-            raise BadRequest(exception)
             
     return jsonify(list(faces_dict.keys()))
 
