@@ -99,9 +99,8 @@ def compare_faces_in_image(file_stream, face_id):
     if len(uploaded_faces):
         
         filename = "{0}/{1}.jpg".format(persistent_faces, request.args.get('id'))
-        reg_face = open(filename, "rb").read()
         face_encodings = []
-        face_encodings.append(face_recognition.face_encodings(reg_face))
+        face_encodings.append(calc_face_encoding(filename))
         ts = time.time()
         dist = face_recognition.face_distance(face_encodings, uploaded_faces[0])[0]
         faces.append({
