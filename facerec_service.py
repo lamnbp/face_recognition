@@ -101,18 +101,18 @@ def compare_faces_in_image(file_stream, face_id):
         filename = "{0}/{1}.jpg".format(persistent_faces, request.args.get('id'))
         reg_face = open(filename, "rb").read()
         face_encodings = []
-        if face_id in faces_dict:
-            face_encodings.append(face_recognition.face_encodings(reg_face))
-            ts = time.time()
-            dist = face_recognition.face_distance(face_encodings, uploaded_faces[0])[0]
-            faces.append({
-                "id": face_id,
-                "dist": dist,
-                "processTime": time.time() - ts,
-                "totalTime": time.time() - tsStart,
-                "donwloadTime": tsDownload - tsStart,
-                "encodingTime": tsEncoding - tsDownload
-            })
+        face_encodings.append(face_recognition.face_encodings(reg_face))
+        ts = time.time()
+        dist = face_recognition.face_distance(face_encodings, uploaded_faces[0])[0]
+        faces.append({
+            "id": face_id,
+            "dist": dist,
+            "processTime": time.time() - ts,
+            "totalTime": time.time() - tsStart,
+            "donwloadTime": tsDownload - tsStart,
+            "encodingTime": tsEncoding - tsDownload
+        })
+        print(jsonify(faces))
 
     return {
         "faces": faces
