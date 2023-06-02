@@ -97,9 +97,12 @@ def compare_faces_in_image(file_stream, face_id):
     faces = []
 
     if len(uploaded_faces):
+        
+        filename = "{0}/{1}.jpg".format(persistent_faces, request.args.get('id'))
+        reg_face = open(filename, "rb").read()
         face_encodings = []
         if face_id in faces_dict:
-            face_encodings.append(faces_dict.get(face_id))
+            face_encodings.append(face_recognition.face_encodings(reg_face))
             ts = time.time()
             dist = face_recognition.face_distance(face_encodings, uploaded_faces[0])[0]
             faces.append({
@@ -159,13 +162,12 @@ def web_faces():
         # TODO add method for extension persistence - do not forget abut the deletion
         file.save("{0}/{1}.jpg".format(persistent_faces, request.args.get('id')))
         try:
-            new_encoding = calc_face_encoding(file)
-            faces_dict.update({request.args.get('id'): new_encoding})
+            #new_encoding = calc_face_encoding(file)
+            faces_dict.update({request.args.get('id'): 1})
         except Exception as exception:
             raise BadRequest(exception)
 
     elif request.method == 'DELETE':
-        faces_dict.pop(request.args.get('id'))
         remove("{0}/{1}.jpg".format(persistent_faces, request.args.get('id')))
 
     return jsonify(list(faces_dict.keys()))
@@ -186,8 +188,8 @@ def url_faces():
         file = requests.get(url)
         filename = "{0}/{1}.jpg".format(persistent_faces, request.args.get('id'))
         open(filename, "wb").write(file.content)
-        new_encoding = calc_face_encoding(filename)
-        faces_dict.update({request.args.get('id'): new_encoding})
+        #new_encoding = calc_face_encoding(filename)
+        faces_dict.update({request.args.get('id'): 1})
     return jsonify(list(faces_dict.keys()))
 
 def extract_image(request):
@@ -206,8 +208,8 @@ def extract_image(request):
 if __name__ == "__main__":
     print("Starting by generating encodings for found images...")
     # Calculate known faces
-    faces_dict = get_faces_dict(persistent_faces)
-    print(faces_dict)
+    # faces_dict = get_faces_dict(persistent_faces)
+    # print(faces_dict)
 
     # Start app
     print("Starting WebServer...")
