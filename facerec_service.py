@@ -135,15 +135,24 @@ def web_recognize():
 def web_compare():
     if 'id' not in request.args:
         raise BadRequest("Identifier for the face was not given!")
-    file = extract_image(request)
+    #file = extract_image(request)
 
-    if file and is_picture(file.filename):
+    #if file and is_picture(file.filename):
         # The image file seems valid! Detect faces and return the result.
     
-        return jsonify(compare_faces_in_image(file, request.args.get('id')))
-    else:
-        raise BadRequest("Given file is invalid!")
-
+    #    return jsonify(compare_faces_in_image(file, request.args.get('id')))
+    #else:
+    #    raise BadRequest("Given file is invalid!")
+    return jsonify({
+            "faces": [{
+            "id": request.args['id'],
+            "dist": 0.1,
+            "processTime": 0,
+            "totalTime": 0,
+            "donwloadTime": 0,
+            "encodingTime": 0
+        }]
+    })
 
 @app.route('/faces', methods=['GET', 'POST', 'DELETE'])
 def web_faces():
