@@ -135,7 +135,7 @@ def web_recognize():
 def web_compare():
     if 'id' not in request.args:
         raise BadRequest("Identifier for the face was not given!")
-    #file = extract_image(request)
+    file = extract_image(request)
 
     #if file and is_picture(file.filename):
         # The image file seems valid! Detect faces and return the result.
