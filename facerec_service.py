@@ -141,7 +141,7 @@ def web_compare():
         # The image file seems valid! Detect faces and return the result.
     return jsonify({
         "faces": [{
-        "id": 1,
+        "id": request.args.id,
         "dist": 0.1,
         "processTime": 0,
         "totalTime": 0,
